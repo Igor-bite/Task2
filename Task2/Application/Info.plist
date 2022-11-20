@@ -2,13 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>To detect hidden users</string>
+	<string>To detect hidden users using bluetooth signal</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>To detect hidden users</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To detect ble devices</string>
+	<string>To turn on quite mode</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>To analyze sounds</string>
+	<string>To analyze sounds and find hidden users</string>
 </dict>
 </plist>
