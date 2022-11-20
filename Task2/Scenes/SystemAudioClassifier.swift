@@ -226,18 +226,20 @@ final class SystemAudioClassifier: NSObject {
     ///   decreasing the stride by raising the overlap factor can improve perceived responsiveness.
     func startSoundClassification(inferenceWindowSize: Double,
                                   overlapFactor: Double) {
-        guard let observer = observer else { return }
-        stopSoundClassification()
-
-        do {
-            let request = try SNClassifySoundRequest(classifierIdentifier: .version1)
-            request.windowDuration = CMTimeMakeWithSeconds(inferenceWindowSize, preferredTimescale: 48_000)
-            request.overlapFactor = overlapFactor
-
-            startListeningForAudioSessionInterruptions()
-            try startAnalyzing([(request, observer)])
-        } catch {
+        if #available(iOS 15.0, *) {
+            guard let observer = observer else { return }
             stopSoundClassification()
+
+            do {
+                let request = try SNClassifySoundRequest(classifierIdentifier: .version1)
+                request.windowDuration = CMTimeMakeWithSeconds(inferenceWindowSize, preferredTimescale: 48_000)
+                request.overlapFactor = overlapFactor
+
+                startListeningForAudioSessionInterruptions()
+                try startAnalyzing([(request, observer)])
+            } catch {
+                stopSoundClassification()
+            }
         }
     }
 
@@ -251,7 +253,10 @@ final class SystemAudioClassifier: NSObject {
     ///
     ///  - Returns: The set of all labels that sound classification emits.
     static func getAllPossibleLabels() throws -> Set<String> {
-        let request = try SNClassifySoundRequest(classifierIdentifier: .version1)
-        return Set<String>(request.knownClassifications)
+        if #available(iOS 15.0, *) {
+            let request = try SNClassifySoundRequest(classifierIdentifier: .version1)
+            return Set<String>(request.knownClassifications)
+        }
+        return []
     }
 }
